@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +11,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedGame, setSelectedGame] = useState<any>(null);
+  const [selectedAmount, setSelectedAmount] = useState('500');
 
   const games = [
     { 
@@ -106,6 +112,23 @@ const Index = () => {
     game.currency.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleBuyClick = (game: any) => {
+    setSelectedGame(game);
+    setIsDialogOpen(true);
+  };
+
+  const handlePurchase = () => {
+    alert(`Покупка ${selectedAmount}₽ валюты для ${selectedGame?.name}! Переход на оплату...`);
+    setIsDialogOpen(false);
+  };
+
+  const amountOptions = [
+    { value: '300', label: '300₽', currency: '1000' },
+    { value: '500', label: '500₽', currency: '1700' },
+    { value: '1000', label: '1000₽', currency: '3500' },
+    { value: '2000', label: '2000₽', currency: '7500' },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
@@ -149,7 +172,10 @@ const Index = () => {
                 Пополняй баланс в любимых играх быстро и безопасно. Скидки до 20%, круглосуточная поддержка.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="hover-glow text-lg">
+                <Button size="lg" className="hover-glow text-lg" onClick={() => {
+                  const element = document.getElementById('catalog');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }}>
                   <Icon name="ShoppingBag" size={20} className="mr-2" />
                   Купить валюту
                 </Button>
@@ -217,7 +243,7 @@ const Index = () => {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full hover-glow" variant="default">
+                  <Button className="w-full hover-glow" variant="default" onClick={() => handleBuyClick(game)}>
                     <Icon name="ShoppingCart" size={18} className="mr-2" />
                     Купить
                   </Button>
@@ -371,6 +397,49 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-card border-border max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-3">
+              <span className="text-4xl">{selectedGame?.icon}</span>
+              {selectedGame?.name}
+            </DialogTitle>
+            <DialogDescription>
+              Выбери сумму пополнения {selectedGame?.currency}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-6 py-4">
+            <RadioGroup value={selectedAmount} onValueChange={setSelectedAmount}>
+              {amountOptions.map((option) => (
+                <div key={option.value} className="flex items-center space-x-3 p-4 rounded-lg border border-border hover:border-primary/50 transition-all cursor-pointer">
+                  <RadioGroupItem value={option.value} id={option.value} />
+                  <Label htmlFor={option.value} className="flex-1 cursor-pointer flex justify-between items-center">
+                    <span className="text-lg font-semibold">{option.label}</span>
+                    <span className="text-muted-foreground">≈ {option.currency} {selectedGame?.currency}</span>
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+
+            <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <Icon name="Info" size={20} className="text-primary mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-semibold mb-1">Моментальная доставка</p>
+                  <p className="text-muted-foreground">Валюта придёт на аккаунт в течение 2-5 минут после оплаты</p>
+                </div>
+              </div>
+            </div>
+
+            <Button className="w-full hover-glow text-lg" size="lg" onClick={handlePurchase}>
+              <Icon name="CreditCard" size={20} className="mr-2" />
+              Перейти к оплате {selectedAmount}₽
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
