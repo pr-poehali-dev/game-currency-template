@@ -54,12 +54,12 @@ const Index = () => {
     },
     { 
       id: 5, 
-      name: 'League of Legends', 
-      currency: 'RP', 
-      price: 'от 450₽', 
-      discount: null,
-      icon: '🏆',
-      popular: false 
+      name: 'Free Fire', 
+      currency: 'Diamonds', 
+      price: 'от 350₽', 
+      discount: '-12%',
+      icon: '🔥',
+      popular: true 
     },
     { 
       id: 6, 
