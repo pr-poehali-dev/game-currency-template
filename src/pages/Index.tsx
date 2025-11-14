@@ -18,11 +18,11 @@ const Index = () => {
   const games = [
     { 
       id: 1, 
-      name: 'Valorant', 
-      currency: 'VP Points', 
+      name: 'Grand Mobile', 
+      currency: 'Donate', 
       price: 'от 500₽', 
       discount: '-15%',
-      icon: '🎯',
+      icon: '🚗',
       popular: true 
     },
     { 
