@@ -63,12 +63,12 @@ const Index = () => {
     },
     { 
       id: 6, 
-      name: 'Genshin Impact', 
-      currency: 'Генезис', 
-      price: 'от 550₽', 
-      discount: '-5%',
-      icon: '⭐',
-      popular: false 
+      name: 'Roblox', 
+      currency: 'Robux', 
+      price: 'от 400₽', 
+      discount: '-8%',
+      icon: '🎮',
+      popular: true 
     },
   ];
 
